@@ -1,0 +1,21 @@
+# Graph's vertices Configurations
+vertices:
+  N: 4 # number of vertices in graph (from 1 to N)
+  objects: # place objects in a vertex. Format: 'ID,OBJECT'
+    - '1,K' # Vertex 1, contains amphibian kit
+    - '2,P1' # Vertex 2, contains 1 person to be rescued
+    - '4,P2,K' # Vertex 4, contains 2 persons to  be rescued and an amphibian kit
+
+# Graph's edges Configurations
+edges: # 'A,B,W,F?'. Example - '1,2,1,F' = Edge between vertices 1 and 2, with weight 1 and it is flooded (flooded is optional)
+  - '1,2,1,F'
+  - '3,4,1'
+  - '2,3,1'
+  - '1,3,4'
+  - '2,4,5'
+
+# Time Constraints Definitions
+action_times:
+  unequip: 1 # takes x time units to unequip
+  equip: 2 # takes x time units to equip
+  amphibian: 3 # moving with amphibian kit is x times slower
