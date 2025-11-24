@@ -2,6 +2,7 @@ import numpy as np
 import yaml
 from utils.constants import Style, Actions
 from agents.human import Human
+from agents.stupid_greedy import StupidGreedy
 
 
 class Environment:
@@ -50,7 +51,9 @@ class Environment:
                         raise ValueError('Error - 4th value of edge is invalid.')
 
             # Populate agents
-            self.agents.append(Human(id=1, initial_position=2))
+            # self.agents.append(Human(id=1, initial_position=2))
+            # self.objects[2].append('Agent1')
+            self.agents.append(StupidGreedy(id=1, initial_position=2))
             self.objects[2].append('Agent1')
 
         except (FileNotFoundError, yaml.YAMLError, ValueError) as e:
