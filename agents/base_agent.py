@@ -1,4 +1,4 @@
-from utils.constants import Style, Actions, ACTIONS_STR
+from utils.constants import Style
 
 
 class BaseAgent:
