@@ -2,7 +2,7 @@ from utils.constants import Style, Actions, ACTIONS_STR
 
 
 class Human:
-    def __init__(self, id, initial_position=0):
+    def __init__(self, id, initial_position):
         self.id = id
         self.position = initial_position
         self.is_holding_amphibian = False
