@@ -24,8 +24,8 @@ class Human(BaseAgent):
                 if go_to not in valid_moves:
                     print(f'Illegal move.')
                     continue
-                if env.check_flooded(go_to) and not self.is_holding_amphibian:
-                    print('Illegal move. Agent must have amphibian kit to move across flooded vertex.')
+                if env.check_flooded(self.position, go_to) and not self.is_holding_amphibian:
+                    print('Illegal move. Agent must have amphibian kit to move across flooded edges.')
                     continue
 
                 return Actions.TRAVERSE, go_to

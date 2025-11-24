@@ -19,7 +19,7 @@ class Environment:
             self.n_vertices = configs['vertices']['N']
             self.weights = -1 * np.ones((self.n_vertices, self.n_vertices)).astype(int)
             self.objects = [[] for i in range(self.n_vertices)]
-            self.flooded_flag = [False for i in range(self.n_vertices)]
+            self.flooded_flag = np.zeros((self.n_vertices, self.n_vertices)).astype(bool)
             self.action_duration = configs['action_duration']
 
             # Parse objects from yaml
@@ -46,15 +46,16 @@ class Environment:
 
                 if len(edge) > 3:
                     if edge[3] == 'F':
-                        self.flooded_flag[edge[0]] = True
+                        self.flooded_flag[edge[0]][edge[1]] = True
+                        self.flooded_flag[edge[1]][edge[0]] = True
                     else:
                         raise ValueError('Error - 4th value of edge is invalid.')
 
             # Populate agents
-            self.agents.append(Human(id=1, initial_position=2))
-            self.objects[2].append('Agent1')
-            # self.agents.append(StupidGreedy(id=1, initial_position=2))
+            # self.agents.append(Human(id=1, initial_position=2))
             # self.objects[2].append('Agent1')
+            self.agents.append(StupidGreedy(id=1, initial_position=2))
+            self.objects[2].append('Agent1')
 
         except (FileNotFoundError, yaml.YAMLError, ValueError) as e:
             print(e)
@@ -120,26 +121,26 @@ class Environment:
 
         return adjacents
 
-    def check_flooded(self, vertex):
-        return self.flooded_flag[vertex]
+    def check_flooded(self, vertex_from, vertex_to):
+        return self.flooded_flag[vertex_from][vertex_to]
 
     def check_amphibian_availability(self, vertex):
         return 'K' in self.objects[vertex]
 
     def log_environment(self):
         print()
-        print(f'{Style.BLUE}Step {self.steps}:{Style.RESET}')
+        print(f'{Style.CYAN}Step {self.steps}:{Style.RESET}')
         print(f'{Style.UNDERLINE}Total Rescued People:{Style.RESET}', f'{self.total_rescued_people}/{self.total_people_to_be_rescued}')
         print(f'{Style.UNDERLINE}Number of vertices:{Style.RESET}', self.n_vertices)
         print(f'{Style.UNDERLINE}Objects in Vertices:{Style.RESET}')
         print(self.objects)
-        print(f'{Style.UNDERLINE}Flooded flags:{Style.RESET}')
-        print(self.flooded_flag)
         print(f'{Style.UNDERLINE}Weights:{Style.RESET}')
         for i in range(self.n_vertices):
             for j in range(self.n_vertices):
-                if self.weights[i][j] == -1:
+                if self.weights[i][j] == -1: # Edge doesn't exist - mark as red
                     print(Style.RED, end='')
+                elif self.flooded_flag[i][j]: # Edge is flooded - mark as blue
+                    print(Style.BLUE, end='')
                 print(self.weights[i][j], Style.RESET, end='\t')
             print()
 

@@ -18,17 +18,19 @@ def dijkstra(start, W, targets):
     Undirected graph.
     W: numpy array shape (n, n)
        W[i, j] = weight >= 0, or -1 if no edge
-    targets: set/list of target node indices
+    targets: list of target node indices
+    flooded: list of flooded vertices
     """
     W = np.asarray(W)
     n = W.shape[0]
 
+    targets = set(targets)
+
     dist = np.full(n, np.inf)
     parent = np.full(n, -1, dtype=int)
-
     dist[start] = 0
+
     pq = [(0.0, start)]
-    targets = set(targets)
 
     while pq:
         d, u = heapq.heappop(pq)
