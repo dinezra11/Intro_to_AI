@@ -7,6 +7,7 @@ class Human:
         self.position = initial_position
         self.is_holding_amphibian = False
         self.score = 0
+        self.rescued_amount = 0
         self.cooldown = 0
 
     def step(self, env):
@@ -49,7 +50,7 @@ class Human:
             return action, None
 
     def log(self):
-        log = f'Human Agent (ID {self.id}), Current Position: {self.position}, {Style.YELLOW}Score: {self.score}{Style.RESET} '
+        log = f'Human Agent (ID {self.id}), Current Position: {self.position}, {Style.YELLOW}Score: {self.score}, rescued {self.rescued_amount} people{Style.RESET} '
         if self.is_holding_amphibian:
             log += ' | With Amphibian Kit.'
         if self.cooldown > 0:

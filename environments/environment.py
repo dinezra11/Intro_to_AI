@@ -44,8 +44,8 @@ class Environment:
                         raise ValueError('Error - 4th value of edge is invalid.')
 
             # Populate agents
-            self.agents.append(Human(id=1, initial_position=0))
-            self.objects[0].append('Agent1')
+            self.agents.append(Human(id=1, initial_position=2))
+            self.objects[2].append('Agent1')
 
         except (FileNotFoundError, yaml.YAMLError, ValueError) as e:
             print(e)
@@ -54,6 +54,7 @@ class Environment:
 
     def step(self):
         for agent in self.agents:
+            # Action handling
             action, info = agent.step(env=self)
 
             if action == Actions.NO_OP:
@@ -79,6 +80,18 @@ class Environment:
                 self.objects[pos].append('K')
                 agent.is_holding_amphibian = False
                 agent.cooldown = self.action_duration['unequip'] - 1
+
+            # Reward handling
+            if agent.cooldown == 0:
+                for i, object in enumerate(self.objects[agent.position]):
+                    if 'P' in object:
+                        rescued_amount = int(object[1:])
+                        new_score = rescued_amount * 1000
+                        agent.score += new_score
+                        agent.rescued_amount += rescued_amount
+                        self.objects[agent.position].pop(i)
+
+            agent.score -= 1 # Drop 1 point for each step
 
 
         self.steps += 1
