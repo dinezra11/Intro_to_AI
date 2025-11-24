@@ -96,7 +96,7 @@ class Environment:
                 agent.is_holding_amphibian = True
                 agent.cooldown = self.action_duration['equip'] - 1
 
-                print(f'{Style.MAGENTA}Agent {agent.id} is unequipping the amphibian kit (action duration is {self.action_duration['equip']} steps).{Style.RESET}')
+                print(f'{Style.MAGENTA}Agent {agent.id} is equipping the amphibian kit (action duration is {self.action_duration['equip']} steps).{Style.RESET}')
             elif action == Actions.UNEQUIP:
                 pos = agent.position
                 self.objects[pos].append('K')
