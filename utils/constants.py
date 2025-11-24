@@ -9,3 +9,12 @@ class Style:
     WHITE = '\033[37m'
     UNDERLINE = '\033[4m'
     RESET = '\033[0m'
+
+
+class Actions:
+    NO_OP = 0
+    TRAVERSE = 1
+    EQUIP = 2
+    UNEQUIP = 3
+
+ACTIONS_STR = 'TRAVERSE 1, EQUIP 2, UNEQUIP 3, NO_NO 0'

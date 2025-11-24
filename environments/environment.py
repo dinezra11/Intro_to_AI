@@ -1,12 +1,13 @@
 import numpy as np
 import yaml
-from utils.colors_code import Style
+from utils.constants import Style, Actions
+from agents.human import Human
 
 
 class Environment:
-    def __init__(self, yaml_path='environment_config.yaml'):
+    def __init__(self, yaml_path):
         try:
-            self.step = 1
+            self.steps = 1
             self.evacuated_people = 0
             self.agents = []
 
@@ -41,19 +42,50 @@ class Environment:
                     else:
                         raise ValueError('Error - 4th value of edge is invalid.')
 
+            # Populate agents
+            self.agents.append(Human(id=1, initial_position=0))
+            self.objects[0].append('Agent1')
+
         except (FileNotFoundError, yaml.YAMLError, ValueError) as e:
             print(e)
             print(f"Error: The file {yaml_path} was not found or not readable. Creating a default environment.")
             # TODO: Default configs for env
 
+    def step(self):
+        for agent in self.agents:
+            action, info = agent.step(env=self)
+
+            if action == Actions.TRAVERSE:
+                old_pos, new_pos = agent.position, info
+                self.objects[old_pos].remove(f'Agent{agent.id}')
+                self.objects[new_pos].append(f'Agent{agent.id}')
+                agent.position = new_pos
+                agent.cooldown = self.weights[old_pos][new_pos] - 1
+
+
+        self.steps += 1
+
+    def get_adjacent_vertices(self, vertex):
+        adjacents = []
+
+        for i in range(self.n_vertices):
+            if i != vertex and self.weights[vertex][i] > 0:
+                adjacents.append(i)
+
+        return adjacents
+
+    def check_flooded(self, vertex):
+        return self.flooded_flag[vertex]
+
     def log_environment(self):
-        print(f'{Style.BLUE}Step {self.step}:{Style.RESET}')
-        print('Number of vertices:', self.n_vertices)
-        print('Objects in Vertices:')
+        print()
+        print(f'{Style.BLUE}Step {self.steps}:{Style.RESET}')
+        print(f'{Style.UNDERLINE}Number of vertices:{Style.RESET}', self.n_vertices)
+        print(f'{Style.UNDERLINE}Objects in Vertices:{Style.RESET}')
         print(self.objects)
-        print('Flooded flag:')
+        print(f'{Style.UNDERLINE}Flooded flags:{Style.RESET}')
         print(self.flooded_flag)
-        print('Weights:')
+        print(f'{Style.UNDERLINE}Weights:{Style.RESET}')
         for i in range(self.n_vertices):
             for j in range(self.n_vertices):
                 if self.weights[i][j] == -1:
@@ -61,5 +93,8 @@ class Environment:
                 print(self.weights[i][j], Style.RESET, end='\t')
             print()
 
+        print(f'{Style.UNDERLINE}Agent States:{Style.RESET}')
+        for agent in self.agents:
+            agent.log()
 
-Environment().log_environment()
+        print(f'{Style.UNDERLINE}Agent Actions in Current Step:{Style.RESET}')
