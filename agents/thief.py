@@ -10,7 +10,7 @@ class Thief(BaseAgent):
         self.is_rescuing = False
 
     def step(self, env):
-        # Using Dijkstra's algorithm. TODO: Break tie of dijkstra by prefering the vertex with more people
+        # Using Dijkstra's algorithm.
         if self.cooldown > 0:
             self.cooldown -= 1
             return Actions.NO_OP, None
