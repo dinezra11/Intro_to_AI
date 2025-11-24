@@ -1,14 +1,11 @@
 from utils.constants import Style, Actions, ACTIONS_STR
+from agents.base_agent import BaseAgent
 
 
-class Human:
+class Human(BaseAgent):
     def __init__(self, id, initial_position):
-        self.id = id
-        self.position = initial_position
-        self.is_holding_amphibian = False
-        self.score = 0
-        self.rescued_amount = 0
-        self.cooldown = 0
+        super().__init__(id, initial_position)
+        self.agent_type = 'Human'
 
     def step(self, env):
         if self.cooldown > 0:
@@ -48,13 +45,3 @@ class Human:
                 return Actions.UNEQUIP, None
 
             return action, None
-
-    def log(self):
-        log = f'Human Agent (ID {self.id}), Current Position: {self.position}, {Style.YELLOW}Score: {self.score}, rescued {self.rescued_amount} people{Style.RESET} '
-        if self.is_holding_amphibian:
-            log += ' | With Amphibian Kit.'
-        if self.cooldown > 0:
-            log += f' | {Style.RED}Agent is currently in action. ({self.cooldown} steps left to finish){Style.RESET}'
-        else:
-            log += f' | {Style.GREEN}Agent is ready to take an action.{Style.RESET}'
-        print(log)
