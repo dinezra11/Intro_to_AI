@@ -3,6 +3,7 @@ import yaml
 from utils.constants import Style, Actions
 from agents.human import Human
 from agents.stupid_greedy import StupidGreedy
+from agents.thief import Thief
 
 
 class Environment:
@@ -52,16 +53,19 @@ class Environment:
                         raise ValueError('Error - 4th value of edge is invalid.')
 
             # Populate agents
-            for agent in configs['agents']:
-                agent_type, agent_id, agent_initial_position = agent.split(',')
+            for i, agent in enumerate(configs['agents']):
+                agent_type, agent_initial_position = agent.split(',')
                 if agent_type == 'human':
                     agent_type = Human
                 elif agent_type == 'stupid-greedy':
                     agent_type = StupidGreedy
+                elif agent_type == 'thief':
+                    agent_type = Thief
                 else: # Default
                     agent_type = Human
 
                 agent_initial_position = int(agent_initial_position)
+                agent_id = i + 1
 
                 self.agents.append(agent_type(id=agent_id, initial_position=agent_initial_position))
                 self.objects[agent_initial_position].append(f'Agent{agent_id}')
@@ -106,7 +110,7 @@ class Environment:
                 print(f'{Style.MAGENTA}Agent {agent.id} is unequipping the amphibian kit (action duration is {self.action_duration['unequip']} steps).{Style.RESET}')
 
             # Reward handling
-            if agent.cooldown == 0:
+            if agent.is_rescuing and agent.cooldown == 0:
                 for i, object in enumerate(self.objects[agent.position]):
                     if 'P' in object:
                         rescued_amount = int(object[1:])

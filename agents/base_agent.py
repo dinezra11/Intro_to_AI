@@ -9,6 +9,7 @@ class BaseAgent:
         self.score = 0
         self.rescued_amount = 0
         self.cooldown = 0
+        self.is_rescuing = True
 
         self.agent_type = '??'
 
@@ -16,7 +17,9 @@ class BaseAgent:
         pass
 
     def log(self):
-        log = f'{self.agent_type} Agent (ID {self.id}), Current Position: {self.position}, {Style.YELLOW}Score: {self.score}, rescued {self.rescued_amount} people{Style.RESET} '
+        log = f'{self.agent_type} Agent (ID {self.id}), Current Position: {self.position}'
+        if self.is_rescuing:
+            log += f', {Style.YELLOW}Score: {self.score}, rescued {self.rescued_amount} people{Style.RESET} '
         if self.is_holding_amphibian:
             log += ' | With Amphibian Kit.'
         if self.cooldown > 0:
