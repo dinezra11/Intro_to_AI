@@ -52,10 +52,19 @@ class Environment:
                         raise ValueError('Error - 4th value of edge is invalid.')
 
             # Populate agents
-            # self.agents.append(Human(id=1, initial_position=2))
-            # self.objects[2].append('Agent1')
-            self.agents.append(StupidGreedy(id=1, initial_position=2))
-            self.objects[2].append('Agent1')
+            for agent in configs['agents']:
+                agent_type, agent_id, agent_initial_position = agent.split(',')
+                if agent_type == 'human':
+                    agent_type = Human
+                elif agent_type == 'stupid-greedy':
+                    agent_type = StupidGreedy
+                else: # Default
+                    agent_type = Human
+
+                agent_initial_position = int(agent_initial_position)
+
+                self.agents.append(agent_type(id=agent_id, initial_position=agent_initial_position))
+                self.objects[agent_initial_position].append(f'Agent{agent_id}')
 
         except (FileNotFoundError, yaml.YAMLError, ValueError) as e:
             print(e)
@@ -68,7 +77,7 @@ class Environment:
             action, info = agent.step(env=self)
 
             if action == Actions.NO_OP:
-                print(f'{Style.MAGENTA}Agent {agent.id} took no action.')
+                print(f'{Style.MAGENTA}Agent {agent.id} took no action.{Style.RESET}')
             elif action == Actions.TRAVERSE:
                 old_pos, new_pos = agent.position, info
                 self.objects[old_pos].remove(f'Agent{agent.id}')
@@ -87,7 +96,7 @@ class Environment:
                 agent.is_holding_amphibian = True
                 agent.cooldown = self.action_duration['equip'] - 1
 
-                print(f'{Style.MAGENTA}Agent {agent.id} is moving from {old_pos} to {new_pos} (action duration is {self.action_duration['equip']} steps).{Style.RESET}')
+                print(f'{Style.MAGENTA}Agent {agent.id} is unequipping the amphibian kit (action duration is {self.action_duration['equip']} steps).{Style.RESET}')
             elif action == Actions.UNEQUIP:
                 pos = agent.position
                 self.objects[pos].append('K')

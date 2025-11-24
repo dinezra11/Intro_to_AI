@@ -19,7 +19,6 @@ class StupidGreedy(BaseAgent):
         for i in range(env.n_vertices):
             for j in range(env.n_vertices):
                 if env.check_flooded(i, j):
-                    print(f'removing flooded {i} to {j}')
                     W[i, j] = -1
 
         target_vertices = []
@@ -30,7 +29,6 @@ class StupidGreedy(BaseAgent):
                     break
 
         distance, path = dijkstra(self.position, W, target_vertices)
-        print(type(path))
 
         if len(path) > 1:
             return Actions.TRAVERSE, path[1]

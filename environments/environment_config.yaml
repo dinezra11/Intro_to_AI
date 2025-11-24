@@ -19,3 +19,8 @@ action_duration:
   unequip: 1 # takes x time units to unequip
   equip: 2 # takes x time units to equip
   amphibian: 3 # moving with amphibian kit is x times slower
+
+agents: # 'type, ID, initial_position' (Types can be: human, stupid-greedy, etc.)
+  - 'human,1,2'
+#  - 'stupid-greedy,2,0'
+#  - 'stupid-greedy,3,3'
