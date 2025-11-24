@@ -23,7 +23,7 @@ class Environment:
             # Parse objects from yaml
             for obj_list in configs['vertices']['objects']:
                 obj_list = obj_list.split(',')
-                vertex = int(obj_list[0]) - 1
+                vertex = int(obj_list[0])
                 objects = obj_list[1:]
 
                 self.objects[vertex] = objects
@@ -31,11 +31,11 @@ class Environment:
             # Parse edges
             for edge in configs['edges']:
                 edge = edge.split(',')
-                edge[0] = int(edge[0]) - 1
-                edge[1] = int(edge[1]) - 1
+                edge[0] = int(edge[0])
+                edge[1] = int(edge[1])
                 edge[2] = int(edge[2])
-                self.weights[int(edge[0])][int(edge[1])] = edge[2]
-                self.weights[int(edge[1])][int(edge[0])] = edge[2]
+                self.weights[edge[0]][edge[1]] = edge[2]
+                self.weights[edge[1]][edge[0]] = edge[2]
 
                 if len(edge) > 3:
                     if edge[3] == 'F':
@@ -56,15 +56,29 @@ class Environment:
         for agent in self.agents:
             action, info = agent.step(env=self)
 
-            if action == Actions.TRAVERSE:
+            if action == Actions.NO_OP:
+                print(f'{Style.MAGENTA}Agent {agent.id} took no action.')
+            elif action == Actions.TRAVERSE:
                 old_pos, new_pos = agent.position, info
                 self.objects[old_pos].remove(f'Agent{agent.id}')
                 self.objects[new_pos].append(f'Agent{agent.id}')
                 agent.position = new_pos
-                if agent.item_hold == 'K': # if it holds the amphibian kit
+                if agent.is_holding_amphibian: # if it holds the amphibian kit
                     agent.cooldown = self.action_duration['amphibian'] * self.weights[old_pos][new_pos] - 1
                 else:
                     agent.cooldown = self.weights[old_pos][new_pos] - 1
+
+                print(f'{Style.MAGENTA}Agent {agent.id} is moving from {old_pos} to {new_pos}.{Style.RESET}')
+            elif action == Actions.EQUIP:
+                pos = agent.position
+                self.objects[pos].remove('K')
+                agent.is_holding_amphibian = True
+                agent.cooldown = self.action_duration['equip'] - 1
+            elif action == Actions.UNEQUIP:
+                pos = agent.position
+                self.objects[pos].append('K')
+                agent.is_holding_amphibian = False
+                agent.cooldown = self.action_duration['unequip'] - 1
 
 
         self.steps += 1
@@ -80,6 +94,9 @@ class Environment:
 
     def check_flooded(self, vertex):
         return self.flooded_flag[vertex]
+
+    def check_amphibian_availability(self, vertex):
+        return 'K' in self.objects[vertex]
 
     def log_environment(self):
         print()

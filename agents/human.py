@@ -1,11 +1,11 @@
-from utils.constants import Actions, ACTIONS_STR
+from utils.constants import Style, Actions, ACTIONS_STR
 
 
 class Human:
     def __init__(self, id, initial_position=0):
         self.id = id
         self.position = initial_position
-        self.item_hold = None
+        self.is_holding_amphibian = False
         self.score = 0
         self.cooldown = 0
 
@@ -23,22 +23,37 @@ class Human:
                 valid_moves = env.get_adjacent_vertices(self.position)
                 go_to = int(input(f'Where to? Available options: {valid_moves}'))
 
-                if go_to in valid_moves:
-                    return Actions.TRAVERSE, go_to
-                else:
+                if go_to not in valid_moves:
                     print(f'Illegal move.')
                     continue
+                if env.check_flooded(go_to) and not self.is_holding_amphibian:
+                    print('Illegal move. Agent must have amphibian kit to move across flooded vertex.')
+                    continue
+
+                return Actions.TRAVERSE, go_to
+
             if action == Actions.EQUIP:
-                pass
+                if not env.check_amphibian_availability(self.position):
+                    print("Illegal move. No amphibian kit in this position.")
+                    continue
+
+                return Actions.EQUIP, None
+
             if action == Actions.UNEQUIP:
-                pass
+                if not self.is_holding_amphibian:
+                    print("Illegal move. Agent doesn't hold amphibian kit.")
+                    continue
+
+                return Actions.UNEQUIP, None
 
             return action, None
 
     def log(self):
-        log = f'Human Agent (ID {self.id}), Current Position: {self.position}, Score: {self.score}. '
+        log = f'Human Agent (ID {self.id}), Current Position: {self.position}, {Style.YELLOW}Score: {self.score}{Style.RESET} '
+        if self.is_holding_amphibian:
+            log += ' | With Amphibian Kit.'
         if self.cooldown > 0:
-            log += f'Agent is currently in action. ({self.cooldown} steps to finish)'
+            log += f' | {Style.RED}Agent is currently in action. ({self.cooldown} steps left to finish){Style.RESET}'
+        else:
+            log += f' | {Style.GREEN}Agent is ready to take an action.{Style.RESET}'
         print(log)
-
-
