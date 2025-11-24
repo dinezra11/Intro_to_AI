@@ -18,6 +18,7 @@ class Environment:
             self.weights = -1 * np.ones((self.n_vertices, self.n_vertices)).astype(int)
             self.objects = [[] for i in range(self.n_vertices)]
             self.flooded_flag = [False for i in range(self.n_vertices)]
+            self.action_duration = configs['action_duration']
 
             # Parse objects from yaml
             for obj_list in configs['vertices']['objects']:
@@ -60,7 +61,10 @@ class Environment:
                 self.objects[old_pos].remove(f'Agent{agent.id}')
                 self.objects[new_pos].append(f'Agent{agent.id}')
                 agent.position = new_pos
-                agent.cooldown = self.weights[old_pos][new_pos] - 1
+                if agent.item_hold == 'K': # if it holds the amphibian kit
+                    agent.cooldown = self.action_duration['amphibian'] * self.weights[old_pos][new_pos] - 1
+                else:
+                    agent.cooldown = self.weights[old_pos][new_pos] - 1
 
 
         self.steps += 1

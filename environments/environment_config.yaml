@@ -15,7 +15,7 @@ edges: # 'A,B,W,F?'. Example - '1,2,1,F' = Edge between vertices 1 and 2, with w
   - '2,4,5'
 
 # Time Constraints Definitions
-action_times:
+action_duration:
   unequip: 1 # takes x time units to unequip
   equip: 2 # takes x time units to equip
   amphibian: 3 # moving with amphibian kit is x times slower
