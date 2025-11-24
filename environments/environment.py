@@ -8,7 +8,8 @@ class Environment:
     def __init__(self, yaml_path):
         try:
             self.steps = 1
-            self.evacuated_people = 0
+            self.total_rescued_people = 0
+            self.total_people_to_be_rescued = 0
             self.agents = []
 
             with open(yaml_path, 'r') as file:
@@ -27,6 +28,11 @@ class Environment:
                 objects = obj_list[1:]
 
                 self.objects[vertex] = objects
+
+                # Count total people that needs to be rescued
+                for obj in objects:
+                    if 'P' in obj:
+                        self.total_people_to_be_rescued += int(obj[1:])
 
             # Parse edges
             for edge in configs['edges']:
@@ -65,21 +71,26 @@ class Environment:
                 self.objects[new_pos].append(f'Agent{agent.id}')
                 agent.position = new_pos
                 if agent.is_holding_amphibian: # if it holds the amphibian kit
-                    agent.cooldown = self.action_duration['amphibian'] * self.weights[old_pos][new_pos] - 1
+                    action_cooldown = self.action_duration['amphibian'] * self.weights[old_pos][new_pos]
                 else:
-                    agent.cooldown = self.weights[old_pos][new_pos] - 1
+                    action_cooldown = self.weights[old_pos][new_pos]
+                agent.cooldown = action_cooldown - 1
 
-                print(f'{Style.MAGENTA}Agent {agent.id} is moving from {old_pos} to {new_pos}.{Style.RESET}')
+                print(f'{Style.MAGENTA}Agent {agent.id} is moving from {old_pos} to {new_pos} (action duration is {action_cooldown} steps).{Style.RESET}')
             elif action == Actions.EQUIP:
                 pos = agent.position
                 self.objects[pos].remove('K')
                 agent.is_holding_amphibian = True
                 agent.cooldown = self.action_duration['equip'] - 1
+
+                print(f'{Style.MAGENTA}Agent {agent.id} is moving from {old_pos} to {new_pos} (action duration is {self.action_duration['equip']} steps).{Style.RESET}')
             elif action == Actions.UNEQUIP:
                 pos = agent.position
                 self.objects[pos].append('K')
                 agent.is_holding_amphibian = False
                 agent.cooldown = self.action_duration['unequip'] - 1
+
+                print(f'{Style.MAGENTA}Agent {agent.id} is unequipping the amphibian kit (action duration is {self.action_duration['unequip']} steps).{Style.RESET}')
 
             # Reward handling
             if agent.cooldown == 0:
@@ -89,6 +100,7 @@ class Environment:
                         new_score = rescued_amount * 1000
                         agent.score += new_score
                         agent.rescued_amount += rescued_amount
+                        self.total_rescued_people += rescued_amount
                         self.objects[agent.position].pop(i)
 
             agent.score -= 1 # Drop 1 point for each step
@@ -114,6 +126,7 @@ class Environment:
     def log_environment(self):
         print()
         print(f'{Style.BLUE}Step {self.steps}:{Style.RESET}')
+        print(f'{Style.UNDERLINE}Total Rescued People:{Style.RESET}', f'{self.total_rescued_people}/{self.total_people_to_be_rescued}')
         print(f'{Style.UNDERLINE}Number of vertices:{Style.RESET}', self.n_vertices)
         print(f'{Style.UNDERLINE}Objects in Vertices:{Style.RESET}')
         print(self.objects)
