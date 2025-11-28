@@ -1,6 +1,7 @@
 import numpy as np
 import yaml
 from utils.constants import Style, Actions
+from utils.search import precompute_distances
 from agents.human import Human
 from agents.stupid_greedy import StupidGreedy
 from agents.thief import Thief
@@ -51,6 +52,9 @@ class Environment:
                         self.flooded_flag[edge[1]][edge[0]] = True
                     else:
                         raise ValueError('Error - 4th value of edge is invalid.')
+
+            # set the optimistic distances matrix, which will be used by the heuristic
+            self.optimistic_dist = precompute_distances(self.weights)
 
             # Populate agents
             for i, agent in enumerate(configs['agents']):
