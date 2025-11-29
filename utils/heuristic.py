@@ -6,17 +6,17 @@ import numpy as np
 # env: reference to environment
 def heuristic(state, env):
 
-    if len(state.remaining_people) == 0:
-        return 0
+    if all(count == 0 for count in state.remaining_people):    # if there are no people to rescue in any vertex - return 0 and agent will know that reached goal state
+        return 0.0
 
     best = float('inf')
 
-    for target in state.remaining_people:
-        d = env.optimistic_dist[state.position][target]
-        best = min(best, d)
+    for v, count in enumerate(state.remaining_people):
+        if count > 0:     # there are people left at vertex v
+            d = env.optimistic_dist[state.position][v]
+            best = min(best, d)
 
     return best
-
 
 # "optimistic" distances ignoring flooding & kit issues, computed once in the env init
 def precompute_distances(weights):
