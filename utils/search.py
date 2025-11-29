@@ -106,7 +106,6 @@ def successors(state, env):
     # 4. NO_OP (stay in place for one time unit)
     # In the real env, if you stand on a P* vertex, people are rescued anyway.
     new_remaining = apply_rescue(remaining, pos)
-    # You can treat NO_OP as cost 1 time unit; that’s a reasonable simple choice.
     step_cost = 1
 
     next_state = SearchState(
