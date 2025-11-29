@@ -1,7 +1,7 @@
 import numpy as np
 import yaml
 from utils.constants import Style, Actions
-from utils.search import precompute_distances
+from utils.heuristic import precompute_distances
 from agents.human import Human
 from agents.stupid_greedy import StupidGreedy
 from agents.thief import Thief
