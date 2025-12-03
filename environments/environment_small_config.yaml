@@ -21,7 +21,8 @@ action_duration:
 
 # Agents: type, initial_position
 agents:
-  - 'greedy-search,0'
+#  - 'stupid-greedy,0'
+#  - 'greedy-search,0'
 #  - 'a-star,0'
-#  - 'a-star-rt,0'
+  - 'a-star-rt,0'
   # you can comment one out when testing them separately

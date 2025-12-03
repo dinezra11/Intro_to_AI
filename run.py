@@ -1,6 +1,8 @@
 from environments.environment import Environment
+import os
+os.system('')
 
-env = Environment(yaml_path='environments/example_from_chat.yaml')
+env = Environment(yaml_path='environments/environment_small_config.yaml')
 for i in range(7):
     env.log_environment()
     env.step()
