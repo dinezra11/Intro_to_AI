@@ -1,18 +1,32 @@
 # Graph's vertices Configurations
 vertices:
-  N: 4 # number of vertices in graph (from 1 to N)
+  N: 11 # number of vertices in graph (from 1 to N)
   objects: # place objects in a vertex. Format: 'ID,OBJECT'
-    - '0,K' # Vertex 1, contains amphibian kit
-    - '1,P1' # Vertex 2, contains 1 person to be rescued
-    - '3,P2,K' # Vertex 4, contains 2 persons to  be rescued and an amphibian kit
+    - '0,K' # Vertex 0, contains amphibian kit
+#    - '3,P2,K' # Vertex 3, contains 2 persons to  be rescued and an amphibian kit
+    - '5,P1'
+    - '8,P5'
+    - '9,P1'
 
 # Graph's edges Configurations
 edges: # 'A,B,W,F?'. Example - '1,2,1,F' = Edge between vertices 1 and 2, with weight 1 and it is flooded (flooded is optional)
   - '0,1,1,F'
-  - '2,3,1'
-  - '1,2,1'
   - '0,2,4'
+  - '0,4,1'
+  - '1,2,1'
   - '1,3,5'
+  - '2,3,1'
+  - '3,0,2'
+  - '3,5,2'
+  - '3,4,2'
+  - '4,6,2'
+  - '4,8,5'
+  - '4,5,4'
+  - '5,6,2'
+  - '6,10,3'
+  - '10,9,1'
+  - '10,8,3'
+  - '10,7,3'
 
 # Time Constraints Definitions
 action_duration:
@@ -21,9 +35,9 @@ action_duration:
   amphibian: 3 # moving with amphibian kit is x times slower
 
 agents: # 'type, initial_position' (Types can be: human, stupid-greedy, etc.)
-  - 'greedy-search,0'
+#  - 'greedy-search,0'
   - 'a-star,0'
-  - 'a-star-rt,0'
+#  - 'a-star-rt,0'
 #  - 'human,2'
 #  - 'stupid-greedy,0'
 #  - 'stupid-greedy,3'
