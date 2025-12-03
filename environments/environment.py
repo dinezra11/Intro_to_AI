@@ -5,6 +5,9 @@ from utils.heuristic import precompute_distances
 from agents.human import Human
 from agents.stupid_greedy import StupidGreedy
 from agents.thief import Thief
+from agents.greedy_search import GreedySearch
+from agents.a_star_search import AStarSearch
+from agents.a_star_rt_search import RealTimeAStar
 
 
 class Environment:
@@ -65,6 +68,12 @@ class Environment:
                     agent_type = StupidGreedy
                 elif agent_type == 'thief':
                     agent_type = Thief
+                elif agent_type == 'greedy-search':
+                    agent_type = GreedySearch
+                elif agent_type == 'a-star':
+                    agent_type = AStarSearch
+                elif agent_type == 'a-star-rt':
+                    agent_type = RealTimeAStar
                 else: # Default
                     agent_type = Human
 
