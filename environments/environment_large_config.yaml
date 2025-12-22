@@ -36,8 +36,8 @@ action_duration:
 
 agents: # 'type, initial_position' (Types can be: human, stupid-greedy, etc.)
 #  - 'greedy-search,0'
-  - 'a-star,0'
-#  - 'a-star-rt,0'
+#  - 'a-star,0'
+  - 'a-star-rt,0'
 #  - 'human,2'
 #  - 'stupid-greedy,0'
 #  - 'stupid-greedy,3'

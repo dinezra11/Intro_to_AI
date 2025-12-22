@@ -7,7 +7,7 @@ import itertools
 
 
 class RealTimeAStar(BaseAgent):
-    def __init__(self, id, initial_position, expansion_limit=10):
+    def __init__(self, id, initial_position, expansion_limit=3):
         super().__init__(id, initial_position)
         self.agent_type = 'A*-RealTime-Search'
         self.expansion_limit = expansion_limit  # 'L' parameter

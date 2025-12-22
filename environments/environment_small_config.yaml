@@ -1,0 +1,28 @@
+# Graph's vertices configurations
+vertices:
+  N: 4           # vertices 0..3
+  objects:
+    - '0,K'      # vertex 0: amphibian kit
+    - '3,P3'     # vertex 3: 3 people to rescue
+
+# Graph's edges configurations
+edges:
+  # Format: 'A,B,W,F?'  (F is optional 'F' for flooded)
+  - '0,3,2,F'    # flooded shortcut: 0 <-> 3, weight 2, FLOODED
+  - '0,1,2'      # dry path edges
+  - '1,2,2'
+  - '2,3,2'
+
+# Time constraints definitions
+action_duration:
+  unequip: 1     # takes 1 time unit to unequip
+  equip: 2       # takes 2 time units to equip
+  amphibian: 3   # moving with amphibian kit is 3x slower
+
+# Agents: type, initial_position
+agents:
+#  - 'stupid-greedy,0'
+#  - 'greedy-search,0'
+#  - 'a-star,0'
+  - 'a-star-rt,0'
+  # you can comment one out when testing them separately
