@@ -8,16 +8,16 @@ vertices:
 # Graph's edges configurations
 edges:
   # Format: 'A,B,W,F?'  (F is optional 'F' for flooded)
-  - '0,3,2,F'    # flooded shortcut: 0 <-> 3, weight 2, FLOODED
-  - '0,1,2'      # dry path edges
-  - '1,2,2'
-  - '2,3,2'
+  - '0,3,1,F'    # flooded shortcut: 0 <-> 3, weight 2, FLOODED
+  - '0,1,1'      # dry path edges
+  - '1,2,1'
+  - '2,3,1'
 
 # Time constraints definitions
 action_duration:
   unequip: 1     # takes 1 time unit to unequip
-  equip: 2       # takes 2 time units to equip
-  amphibian: 3   # moving with amphibian kit is 3x slower
+  equip: 1       # takes 2 time units to equip
+  amphibian: 1   # moving with amphibian kit is 3x slower
 
 agents: # 'type, initial_position' (Types can be: human, stupid-greedy, etc.)
   - 'minimax,0'

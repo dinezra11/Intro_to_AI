@@ -3,6 +3,6 @@ import os
 os.system('')
 
 env = Environment(yaml_path='environments/environment_minimax_config.yaml')
-for i in range(7):
+for i in range(20):
     env.log_environment()
     env.step()
