@@ -8,6 +8,7 @@ from agents.thief import Thief
 from agents.greedy_search import GreedySearch
 from agents.a_star_search import AStarSearch
 from agents.a_star_rt_search import RealTimeAStar
+from agents.minimax_agent import MinimaxAgent
 
 
 class Environment:
@@ -74,6 +75,8 @@ class Environment:
                     agent_type = AStarSearch
                 elif agent_type == 'a-star-rt':
                     agent_type = RealTimeAStar
+                elif agent_type == 'minimax':
+                    agent_type = MinimaxAgent
                 else: # Default
                     agent_type = Human
 
