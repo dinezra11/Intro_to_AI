@@ -1,6 +1,6 @@
-from agents.base_agent import BaseAgent
+from Assignments_1_2.agents.base_agent import BaseAgent
 from utils.constants import Actions
-from utils.greedy import dijkstra
+from Assignments_1_2.utils.greedy import dijkstra
 
 
 class StupidGreedy(BaseAgent):

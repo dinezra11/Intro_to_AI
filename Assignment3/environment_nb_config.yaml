@@ -1,0 +1,23 @@
+# Graph's vertices configurations
+vertices:
+  N: 4
+  objects:
+    - '0,K'
+    - '3,P3'
+
+# Graph's edges configurations
+edges:
+  # Format: 'A,B,W,F?,p'
+  # p = P(Flooded | mild weather)
+  - '0,3,1,F,0.2'
+  - '0,1,1,,0.1'
+  - '1,2,1,,0.05'
+  - '2,3,1,,0.3'
+
+# Probabilistic parameters
+uncertainty:
+  P1: 0.3
+  weather_prior:
+    mild: 0.1
+    stormy: 0.4
+    extreme: 0.5

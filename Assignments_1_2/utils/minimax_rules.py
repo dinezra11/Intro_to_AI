@@ -1,5 +1,5 @@
 from utils.constants import Actions
-from utils.game_state import GameState
+from Assignments_1_2.utils.game_state import GameState
 
 
 def build_initial_gamestate(env, agent0, agent1):

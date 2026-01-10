@@ -1,4 +1,4 @@
-from environments.environment import Environment
+from Assignments_1_2.environments.environment import Environment
 import os
 os.system('')
 
