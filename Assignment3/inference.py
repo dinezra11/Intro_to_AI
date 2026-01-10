@@ -25,11 +25,24 @@ def enumerate_all(vars_order, bn, assignment):
 
 
 def query(bn, var_name, evidence):
+    # -----------------------------------
+    # CASE 1: Query variable is observed
+    # -----------------------------------
+    if var_name in evidence:
+        val = evidence[var_name]
+        return {
+            v: 1.0 if v == val else 0.0
+            for v in bn.get(var_name).domain
+        }
+
+    # -----------------------------------
+    # CASE 2: Normal inference
+    # -----------------------------------
     dist = {}
     for val in bn.get(var_name).domain:
-        evidence[var_name] = val
-        dist[val] = enumerate_all(bn.order, bn, dict(evidence))
-        del evidence[var_name]
+        extended_evidence = dict(evidence)
+        extended_evidence[var_name] = val
+        dist[val] = enumerate_all(bn.order, bn, extended_evidence)
 
     dist = {k: round(v, 3) for k, v in dist.items()}
 
@@ -38,3 +51,4 @@ def query(bn, var_name, evidence):
         dist[k] /= norm
 
     return dist
+
