@@ -31,6 +31,8 @@ def query(bn, var_name, evidence):
         dist[val] = enumerate_all(bn.order, bn, dict(evidence))
         del evidence[var_name]
 
+    dist = {k: round(v, 3) for k, v in dist.items()}
+
     norm = sum(dist.values())
     for k in dist:
         dist[k] /= norm
