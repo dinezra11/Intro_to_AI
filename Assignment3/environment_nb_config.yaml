@@ -21,3 +21,122 @@ uncertainty:
     mild: 0.1
     stormy: 0.4
     extreme: 0.5
+
+
+> python3 ./Assignment/main.py
+
+WEATHER:
+  P(mild) = 0.1
+  P(stormy) = 0.4
+  P(extreme) = 0.5
+
+EDGE 0:
+  P(flooded|mild) = 0.2
+  P(flooded|stormy) = 0.4
+  P(flooded|extreme) = 0.6
+
+EDGE 1:
+  P(flooded|mild) = 0.1
+  P(flooded|stormy) = 0.2
+  P(flooded|extreme) = 0.3
+
+EDGE 2:
+  P(flooded|mild) = 0.3
+  P(flooded|stormy) = 0.6
+  P(flooded|extreme) = 0.9
+
+EDGE 3:
+  P(flooded|mild) = 0.0
+  P(flooded|stormy) = 0.0
+  P(flooded|extreme) = 0.0
+
+VERTEX 0:
+  P(Evacuees|flooded 0) = 0.3
+  P(Evacuees|not flooded 0) = 0.0
+
+VERTEX 1:
+  P(Evacuees|flooded 1, flooded 2) = 0.19
+  P(Evacuees|flooded 1, not flooded 2) = 0.1
+  P(Evacuees|not flooded 1, flooded 2) = 0.1
+  P(Evacuees|not flooded 1, not flooded 2) = 0.0
+
+VERTEX 2:
+  P(Evacuees|flooded 0, flooded 1, flooded 3) = 0.4173
+  P(Evacuees|flooded 0, flooded 1, not flooded 3) = 0.37
+  P(Evacuees|flooded 0, not flooded 1, flooded 3) = 0.3525
+  P(Evacuees|flooded 0, not flooded 1, not flooded 3) = 0.3
+  P(Evacuees|not flooded 0, flooded 1, flooded 3) = 0.1675
+  P(Evacuees|not flooded 0, flooded 1, not flooded 3) = 0.1
+  P(Evacuees|not flooded 0, not flooded 1, flooded 3) = 0.075
+  P(Evacuees|not flooded 0, not flooded 1, not flooded 3) = 0.0
+
+VERTEX 3:
+  P(Evacuees|flooded 2, flooded 3) = 0.1675
+  P(Evacuees|flooded 2, not flooded 3) = 0.1
+  P(Evacuees|not flooded 2, flooded 3) = 0.075
+  P(Evacuees|not flooded 2, not flooded 3) = 0.0
+
+
+=== INTERACTIVE BAYESIAN REASONING ===
+
+=== MENU ===
+1) Reset evidence
+2) Add evidence
+3) Run probabilistic reasoning
+4) Quit
+> 2
+
+Add evidence:
+a) Weather
+b) Flooding at edge
+c) Evacuees at vertex
+> b
+Enter edge index: 1
+Flooded? (true / false): true
+
+=== MENU ===
+1) Reset evidence
+2) Add evidence
+3) Run probabilistic reasoning
+4) Quit
+> 2
+
+Add evidence:
+a) Weather
+b) Flooding at edge
+c) Evacuees at vertex
+> b
+Enter edge index: 3
+Flooded? (true / false): fa;se
+Invalid input.
+
+=== MENU ===
+1) Reset evidence
+2) Add evidence
+3) Run probabilistic reasoning
+4) Quit
+> 3
+
+=== POSTERIOR PROBABILITIES ===
+
+(3) WEATHER DISTRIBUTION:
+{'mild': 0.04166666666666667, 'stormy': 0.33333333333333337, 'extreme': 0.625}
+
+(2) EDGE FLOODING PROBABILITIES:
+F0: {True: 0.5166666666666667, False: 0.4833333333333334}
+F1: {True: 1.0, False: 0.0}
+F2: {True: 0.775, False: 0.225}
+F3: {True: 0.0, False: 1.0}
+
+(1) EVACUEE PROBABILITIES:
+Ev0: {True: 0.15416666666666665, False: 0.8458333333333333}
+Ev1: {True: 0.17083333333333334, False: 0.8291666666666666}
+Ev2: {True: 0.23750000000000002, False: 0.7625000000000001}
+Ev3: {True: 0.07916666666666666, False: 0.9208333333333334}
+
+=== MENU ===
+1) Reset evidence
+2) Add evidence
+3) Run probabilistic reasoning
+4) Quit
+>
