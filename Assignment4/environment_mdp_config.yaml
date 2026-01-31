@@ -1,0 +1,36 @@
+vertices:
+  N: 9   # 0..8
+
+start: 0
+target: 8
+
+# Edges: 'u,v,weight,p'
+# p = probability the edge is flooded
+# IMPORTANT: Only edges with p>0 become belief variables.
+# We keep only 5 uncertain edges to keep value iteration fast.
+
+edges:
+  # ---------------------------
+  # Main corridor to the goal (longer, with high-risk sections)
+  # 0-1-2-3-4-8  (5 steps)
+  # ---------------------------
+  - '0,1,1,0.0'     # deterministic
+  - '1,2,1,0.65'    # uncertain (high flood)
+  - '2,3,1,0.60'    # uncertain (high flood)
+  - '3,4,1,0.0'     # deterministic
+  - '4,8,2,0.70'    # uncertain (high flood)
+
+  # ---------------------------
+  # Detour path (more steps, safer overall)
+  # 0-5-6-7-8  (4 steps)
+  # ---------------------------
+  - '0,5,2,0.0'     # deterministic
+  - '5,6,2,0.25'    # uncertain (moderate flood)
+  - '6,7,2,0.0'     # deterministic
+  - '7,8,2,0.20'    # uncertain (moderate flood)
+
+  # ---------------------------
+  # Cross links (give the policy alternatives without adding uncertainty)
+  # ---------------------------
+  - '2,6,3,0.0'     # deterministic cross link
+  - '4,7,2,0.0'     # deterministic cross link

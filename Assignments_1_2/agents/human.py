@@ -1,5 +1,5 @@
 from utils.constants import Actions, ACTIONS_STR
-from agents.base_agent import BaseAgent
+from Assignments_1_2.agents.base_agent import BaseAgent
 
 
 class Human(BaseAgent):

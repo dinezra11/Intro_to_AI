@@ -1,7 +1,7 @@
-from agents.base_agent import BaseAgent
+from Assignments_1_2.agents.base_agent import BaseAgent
 from utils.constants import Actions
 from utils.search import SearchState, successors  
-from utils.heuristic import heuristic
+from Assignments_1_2.utils.heuristic import heuristic
 
 import heapq
 import itertools

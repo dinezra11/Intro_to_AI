@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from typing import Optional, Tuple, Dict, Any
 
-from agents.base_agent import BaseAgent
+from Assignments_1_2.agents.base_agent import BaseAgent
 from utils.constants import Actions
-from utils.game_state import GameState
+from Assignments_1_2.utils.game_state import GameState
 from utils.minimax_rules import successors_game
 
 ActionTuple = Tuple[int, Optional[int]]  # (Actions.*, info)

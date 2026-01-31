@@ -1,12 +1,12 @@
 import numpy as np
 import yaml
 from utils.constants import Style, Actions
-from utils.heuristic import precompute_distances
+from Assignments_1_2.utils.heuristic import precompute_distances
 
-from agents.human import Human
+from Assignments_1_2.agents.human import Human
 from agents.stupid_greedy import StupidGreedy
 from agents.thief import Thief
-from agents.greedy_search import GreedySearch
+from Assignments_1_2.agents.greedy_search import GreedySearch
 from agents.a_star_search import AStarSearch
 from agents.a_star_rt_search import RealTimeAStar
 from agents.minimax_agent import MinimaxAgent
