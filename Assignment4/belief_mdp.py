@@ -9,7 +9,12 @@ class BeliefMDP:
         self.start = start
         self.target = target
 
-        self.uncertain_edges = [i for i, e in enumerate(edges) if e[3] > 0]
+        # Only edges with meaningful uncertainty are belief variables
+        # Every edge with nonzero flooding probability is uncertain
+        self.uncertain_edges = [
+            i for i, e in enumerate(edges)
+            if e[3] > 0.0
+        ]
         self.edge_index = {i: idx for idx, i in enumerate(self.uncertain_edges)}
 
     def all_beliefs(self):
