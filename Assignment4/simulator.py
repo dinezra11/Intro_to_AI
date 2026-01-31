@@ -21,7 +21,7 @@ def belief_to_string(mdp, belief):
                 "CLEAR"
             )
         else:
-            state = "DETERMINISTIC (assumed clear)"
+            state = "clear (certain)"
 
         s += f"  Edge {i}: {state}\n"
 
@@ -29,7 +29,7 @@ def belief_to_string(mdp, belief):
 
 
 
-def simulate(mdp, policy, trials=1):
+def simulate(mdp, policy, trials=1, max_steps=50):
     for t in range(trials):
         # Sample true flooding configuration
         flooded = {}
@@ -39,16 +39,23 @@ def simulate(mdp, policy, trials=1):
         pos = mdp.start
         knowledge = tuple(UNKNOWN for _ in mdp.uncertain_edges)
 
-        print("\n" + "=" * 40)
+        total_cost = 0.0   # ✅ NEW: accumulated cost
+
+        print("\n" + "=" * 50)
         print(f"Simulation {t + 1}")
         print("True flooded edges (hidden from agent):")
+
         for i, v in flooded.items():
             print(f"  Edge {i}: {'FLOODED' if v else 'CLEAR'}")
 
         step = 0
-        while pos != mdp.target:
+
+        while pos != mdp.target and step < max_steps:
+
             print("\n" + "-" * 30)
             print(f"Step {step}")
+            print(f"Total cost so far: {round(total_cost, 3)}")  # ✅ PRINT COST
+
             belief = (pos, knowledge)
 
             # Print belief state
@@ -63,23 +70,39 @@ def simulate(mdp, policy, trials=1):
             nxt = v if pos == u else u
 
             print(f"Chosen action: traverse edge {e} ({u} ↔ {v})")
+            print(f"Edge cost: {w}")
+
+            # Cost is paid regardless of outcome
+            total_cost += w   # ✅ UPDATE COST
 
             if flooded[e]:
                 print(f"Observation: Edge {e} is FLOODED → stay at {pos}")
+
                 idx = mdp.edge_index[e]
                 knowledge = list(knowledge)
                 knowledge[idx] = FLOODED
                 knowledge = tuple(knowledge)
+
             else:
                 print(f"Observation: Edge {e} is CLEAR → move to {nxt}")
+
                 if e in mdp.edge_index:
                     idx = mdp.edge_index[e]
                     knowledge = list(knowledge)
                     knowledge[idx] = CLEAR
                     knowledge = tuple(knowledge)
+
                 pos = nxt
 
             step += 1
 
-        print("\nReached target vertex:", pos)
-        print("=" * 40)
+        if pos == mdp.target:
+            print("\nReached target vertex:", pos)
+            print(f"Final total cost: {round(total_cost, 3)}")
+        else:
+            print("\nDidn't reach goal within", max_steps, "steps.")
+            print("Current vertex:", pos)
+            print("Final belief state:")
+            print(belief_to_string(mdp, (pos, knowledge)))
+            print(f"Total cost so far: {round(total_cost, 3)}")
+        print("=" * 50)

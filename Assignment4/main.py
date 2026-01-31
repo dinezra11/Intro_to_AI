@@ -9,10 +9,6 @@ def main():
 
     V, policy = value_iteration(mdp)
 
-    print("\nBelief State Values:")
-    for b, v in V.items():
-        print(b, "->", round(v, 3))
-
     simulate(mdp, policy, trials=1)
 
 if __name__ == "__main__":
